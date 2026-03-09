@@ -1,0 +1,27 @@
+[package]
+name = "esperto"
+version = "0.1.0"
+edition = "2024"
+license = "MIT"
+repository = "https://github.com/KayJay7/esperto.git"
+
+[features]
+serde = ["dep:serde"]
+demo = ["serde", "dep:sdl3", "dep:serde_yaml", "dep:font-kit", "dep:clap"]
+
+[dependencies]
+frozen-collections = "0.9.1"
+tinyset = "0.5.2"
+
+# Serialization
+serde = { version = "1.0.228", features = ["derive"], optional = true }
+
+# Demo
+sdl3 = { version = "0.17.3", features = ["ttf"], optional = true }
+serde_yaml = { version = "0.9.34", optional = true }
+font-kit = { version = "0.14.3", optional = true }
+clap = { version = "4.5.60", features = ["derive"], optional = true }
+
+[[example]]
+name = "sdl-demo"
+required-features = ["demo"]

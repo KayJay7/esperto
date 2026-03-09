@@ -1,0 +1,54 @@
+modifiers:
+  - name: Ctrl
+    keys: [ LCtrl ]
+  - name: Alt
+    keys: [ LAlt ]
+  - name: RCtrl
+    keys: [ RCtrl ]
+    masking: true
+  - name: CtrlAlt
+    keys:
+      - LCtrl
+      - LAlt
+  - name: CtrlAltShift
+    masking: true
+    keys:
+      - LCtrl
+      - LAlt
+      - LShift
+actions:
+  - key: LCtrl
+    immediate: true
+    action: 1
+  - key: LAlt
+#    immediate: true
+    action: 2
+  - key: A
+    action: 3
+  - key: B
+    action: 4
+    modified:
+      - modifier: Ctrl
+        action: 5
+      - modifier: RCtrl
+        action: 6
+      - modifier: CtrlAlt
+        action: 7
+  - key: C
+    modified:
+      - modifier: CtrlAltShift
+        action: 8
+  - key: D
+    modified:
+      - modifier: RCtrl
+        action: 9
+  # conditional axis
+  - key: RightX
+    modified:
+      - modifier: RCtrl
+        action: 10
+  - key: LeftX
+    action: 11
+    modified:
+      - modifier: RCtrl
+        action: 12

@@ -1,0 +1,333 @@
+modifiers:
+  - name: Q
+    keys: [ Q ]
+  - name: W
+    keys: [ W ]
+  - name: E
+    keys: [ E ]
+  - name: R
+    keys: [ R ]
+
+  - name: QW
+    keys: [ Q, W ]
+  - name: WE
+    keys: [ W, E ]
+  - name: ER
+    keys: [ E, R ]
+  - name: QWE
+    keys: [ Q, W, E ]
+
+  - name: T
+    keys: [ T ]
+    masking: true
+  - name: Y
+    keys: [ Y ]
+    masking: true
+  - name: U
+    keys: [ U ]
+    masking: true
+
+  - name: TY
+    keys: [ T, Y ]
+    masking: false
+  - name: YU
+    keys: [ Y, U ]
+    masking: false
+  - name: TU
+    keys: [ T, U ]
+    masking: false
+  - name: TYU
+    keys: [ T, Y, U ]
+    masking: true
+
+  - name: RT
+    keys: [ R, T ]
+    masking: true
+
+
+  - name: A
+    keys: [ A ]
+  - name: S
+    keys: [ S ]
+  - name: D
+    keys: [ D ]
+  - name: F
+    keys: [ F ]
+  - name: G
+    keys: [ G ]
+  - name: H
+    keys: [ H ]
+  - name: J
+    keys: [ J ]
+  - name: K
+    keys: [ K ]
+
+  - name: LB
+    keys: [ LeftShoulder ]
+  - name: RB
+    keys: [ RightShoulder ]
+
+actions:
+  - key: Z
+    action: Yes
+    modified:
+      - modifier: S
+
+  - key: LeftX
+    modified:
+      - modifier: LB
+        action: Yes
+  - key: LeftY
+    modified:
+      - modifier: LB
+        action: Yes
+  - key: RightX
+    modified:
+      - modifier: RB
+        action: Yes
+  - key: RightY
+    modified:
+      - modifier: RB
+        action: Yes
+  - key: TriggerLeft
+    modified:
+      - modifier: LB
+        action: Yes
+  - key: TriggerRight
+    modified:
+      - modifier: RB
+        action: Yes
+
+  - key: X
+    modified: 
+      - modifier: Q
+        action: Yes
+
+
+  - key: Q
+    action: Yes
+    modified:
+      - modifier: R
+        action: Yes
+  - key: W
+    action: Yes
+  - key: E
+    action: Yes
+  - key: R
+    action: Yes
+  - key: T
+    action: Yes
+  - key: Y
+    action: Yes
+  - key: U
+    action: Yes
+
+  - key: A
+    action: Yes
+  - key: S
+    action: Yes
+  - key: D
+    action: Yes
+  - key: F
+    action: Yes
+  - key: G
+    action: Yes
+    immediate: true
+  - key: H
+    action: Yes
+    immediate: true
+  - key: J
+    action: Yes
+    immediate: true
+  - key: K
+    action: Yes
+    immediate: true
+
+  - key: _1
+    action: Yes
+    modified:
+      - modifier: LB
+        action: Yes
+      - modifier: RB
+        action: Yes
+      - modifier: Q
+        action: Yes
+      - modifier: W
+        action: Yes
+      - modifier: E
+        action: Yes
+      - modifier: R
+        action: Yes
+      - modifier: T
+        action: Yes
+      - modifier: Y
+        action: Yes
+      - modifier: U
+        action: Yes
+  - key: _2
+    action: Yes
+    modified:
+      - modifier: Q
+        action: Yes
+      - modifier: W
+        action: Yes
+      - modifier: E
+        action: Yes
+      - modifier: R
+        action: Yes
+      - modifier: T
+        action: Yes
+      - modifier: Y
+        action: Yes
+      - modifier: U
+        action: Yes
+  - key: _3
+    action: Yes
+    modified:
+      - modifier: Q
+        action: Yes
+      - modifier: W
+        action: Yes
+      - modifier: E
+        action: Yes
+      - modifier: R
+        action: Yes
+      - modifier: T
+        action: Yes
+      - modifier: Y
+        action: Yes
+      - modifier: U
+        action: Yes
+  - key: _4
+    action: Yes
+    modified:
+      - modifier: Q
+        action: Yes
+      - modifier: W
+        action: Yes
+      - modifier: E
+        action: Yes
+      - modifier: R
+        action: Yes
+      - modifier: T
+        action: Yes
+      - modifier: Y
+        action: Yes
+      - modifier: U
+        action: Yes
+      - modifier: QW
+        action: Yes
+      - modifier: WE
+        action: Yes
+      - modifier: QWE
+        action: Yes
+  - key: _5
+    latching: true
+    action: Yes
+    modified:
+      - modifier: Q
+        action: Yes
+      - modifier: W
+        action: Yes
+      - modifier: E
+        action: Yes
+#      - modifier: R
+#        action: Yes
+#      - modifier: T
+#        action: Yes
+#      - modifier: Y
+#        action: Yes
+#      - modifier: U
+#        action: Yes
+  - key: _6
+    latching: true
+    action: Yes
+    modified:
+      - modifier: Q
+        action: Yes
+      - modifier: W
+        action: Yes
+      - modifier: E
+        action: Yes
+      - modifier: R
+        action: Yes
+      - modifier: T
+        action: Yes
+      - modifier: Y
+        action: Yes
+      - modifier: U
+        action: Yes
+  - key: _7
+    latching: true
+    action: Yes
+    modified:
+      - modifier: Q
+        action: Yes
+      - modifier: W
+        action: Yes
+      - modifier: E
+        action: Yes
+      - modifier: R
+        action: Yes
+      - modifier: T
+        action: Yes
+      - modifier: Y
+        action: Yes
+      - modifier: U
+        action: Yes
+
+
+#modifiers:
+#  - name: Ctrl
+#    keys: [ LCtrl ]
+#  - name: Alt
+#    keys: [ LAlt ]
+#  - name: RCtrl
+#    keys: [ RCtrl ]
+#    masking: true
+#  - name: CtrlAlt
+#    keys:
+#      - LCtrl
+#      - LAlt
+#  - name: CtrlAltShift
+#    masking: true
+#    keys:
+#      - LCtrl
+#      - LAlt
+#      - LShift
+#actions:
+#  - key: LCtrl
+#    immediate: true
+#    action: Yes
+#  - key: LAlt
+#    #    immediate: true
+#    action: Yes
+#  - key: A
+#    action: Yes
+#  - key: B
+#    action: Yes
+#    modified:
+#      - modifier: Ctrl
+#        action: Yes
+#      - modifier: RCtrl
+#        action: Yes
+#      - modifier: CtrlAlt
+#        action: Yes
+#  - key: C
+#    modified:
+#      - modifier: CtrlAltShift
+#        action: Yes
+#  - key: D
+#    modified:
+#      - modifier: RCtrl
+#        action: Yes
+#  # conditional axis
+#  - key: RightX
+#    modified:
+#      - modifier: RCtrl
+#        action: Yes
+#  - key: LeftX
+#    action: Yes
+#    modified:
+#      - modifier: RCtrl
+#        action: Yes
