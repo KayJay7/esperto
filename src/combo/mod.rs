@@ -429,10 +429,10 @@ impl<A: Keycode, Z: Keycode> ComboHandler<A, Z> {
          Kind::Up => {
             let mut invalidate_cache = false;
             for group in self.keys[key].iter_groups(&self.keys_groups) {
-               for group in self.groups[*group].iter_pred(&self.groups_pred) {
-                  self.groups[*group].active_greater -= 1;
-               }
                if self.groups[*group].is_active() {
+                  for group in self.groups[*group].iter_pred(&self.groups_pred) {
+                     self.groups[*group].active_greater -= 1;
+                  }
                   invalidate_cache = true;
                   self.masks -= self.groups[*group].mask_weight;
                   close_active_combos(

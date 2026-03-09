@@ -8,14 +8,16 @@ modifiers:
   - name: R
     keys: [ R ]
 
-  - name: QW
-    keys: [ Q, W ]
+#  - name: QW
+#    keys: [ Q, W ]
   - name: WE
     keys: [ W, E ]
   - name: ER
     keys: [ E, R ]
   - name: QWE
     keys: [ Q, W, E ]
+  - name: QWR
+    keys: [ Q, W, R ]
 
   - name: T
     keys: [ T ]
@@ -152,18 +154,18 @@ actions:
         action: Yes
       - modifier: Q
         action: Yes
-      - modifier: W
-        action: Yes
-      - modifier: E
-        action: Yes
-      - modifier: R
-        action: Yes
-      - modifier: T
-        action: Yes
-      - modifier: Y
-        action: Yes
-      - modifier: U
-        action: Yes
+#      - modifier: W
+#        action: Yes
+#      - modifier: E
+#        action: Yes
+#      - modifier: R
+#        action: Yes
+#      - modifier: T
+#        action: Yes
+#      - modifier: Y
+#        action: Yes
+#      - modifier: U
+#        action: Yes
   - key: _2
     action: Yes
     modified:
@@ -215,8 +217,8 @@ actions:
         action: Yes
       - modifier: U
         action: Yes
-      - modifier: QW
-        action: Yes
+#      - modifier: QW
+#        action: Yes
       - modifier: WE
         action: Yes
       - modifier: QWE
