@@ -1,15 +1,4 @@
-//! This crate provides a performant implementation of the Esperto input system, a powerful
-//! and robust system for key combinations. The implementation is generic, so that it can
-//! be easily plugged into new and existing systems, regardless of their needs.
-//!
-//! The main functionalities are provided by the [`combo::ComboHandler`] struct.
-//!
-//! The crate also provides a SDL3 based demo in the examples section, that prints recognized
-//! key combinations on a window.
-//!
-//! ## Esperto input system
-//!
-//! /TODO markdown qui
+#![doc = include_str!("../README.md")]
 
 /// Module with the implementation of the combo algorithm.
 ///

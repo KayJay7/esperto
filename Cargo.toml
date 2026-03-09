@@ -4,6 +4,9 @@ version = "0.1.0"
 edition = "2024"
 license = "MIT"
 repository = "https://github.com/KayJay7/esperto.git"
+description = "esperto input system implementation"
+homepage = "https://github.com/KayJay7/esperto"
+readme = "README.md"
 
 [features]
 serde = ["dep:serde"]
