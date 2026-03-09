@@ -1,14 +1,15 @@
-## Esperto
+# Esperto
 
-This crate provides a performant implementation of the Esperto input system, a powerful and robust system for key combinations.
+This crate provides a performant implementation of the esperto input system, a powerful and robust system for key combinations.
 The implementation is generic, so that it can be easily plugged into new and existing systems, regardless of their needs.
 
 The main functionalities are provided by the [`combo::ComboHandler`] struct.
 
 The crate also provides a SDL3 based demo in the examples section, that prints recognized key combinations on a window.
-Esperto input syste
 
-### Definitions
+The crate is available on [crates.io](https://crates.io/crates/esperto).
+
+## Definitions
 
 Mapped keys are **action keys**. They can have a default mapped action and eventual *modified* actions.
 
@@ -23,7 +24,7 @@ Modifier keys are organized in *modifier groups* of one or more key (e.g. [`ctrl
     * modifier keys can `key-down` in any order: `ctrl`, `win`, `c` = `win`, `ctrl`, `c`
 * it is **not time sensitive**
 
-### Configuration example
+## Configuration example
 
 ```yaml
 # Here we define modifier groups of one or more modifier key.
@@ -48,9 +49,9 @@ actions:
           action: MediaStop
 ```
 
-### Advanced topics
+## Advanced topics
 
-#### Options
+### Options
 
 * modifier group options
     * `masking = True`: While the modifier group is active, mask all actions which are not part of a combo.
@@ -64,21 +65,15 @@ actions:
 
   For example, in a game where you have to keep pressed \[`shift`\]+`W` to run, this option would allow to release `shift` and keep the combo active until you release `W`.
 
-#### Conflict resolution
+### Conflict resolution
 
 Pressing a modifier key which activates a modifier group *G*, will cause subgroups of *G* to deactivate.
 
 Pressing an action key *K* in presence of conflicts will prevent its combos from activating: overlapping/multiple active modifier groups for *K* will nullify, and only the default action will be performed (if any).
 
-### Implementation
-
-We implemented the above specification in a rust library available [here](). We focused on performance, by means of one-time precomputation and efficient memory layouts. We wrote it with InputPlumber in mind but it's quite generic (FYI, no vibe coding was employed).
-
-The crate features an example SDL demo which shows the combos as seen by the system. Useful for debugging too.
-
 ---
 
-### Future work: chords
+## Future work: chords
 
 The chord specification, summarized:
 
@@ -97,7 +92,7 @@ It intrinsically introduces **delay**, which may vary depending on the existence
 
 We are considering to expose an options to request a constant delay.
 
-#### Implementation notes
+### Implementation notes
 
 An equivalent definition using a "time buffer":
 
