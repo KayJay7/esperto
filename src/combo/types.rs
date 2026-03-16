@@ -1,6 +1,7 @@
 use crate::types::Keycode;
 use frozen_collections::FzScalarSet;
 use std::cmp::{max, Ordering};
+use std::collections::VecDeque;
 use tinyset::SetUsize;
 
 #[derive(Debug, Clone)]
@@ -142,5 +143,22 @@ impl IntoIterator for Range {
 
    fn into_iter(self) -> Self::IntoIter {
       self.start..self.end
+   }
+}
+
+/// Trait for the output event queue.
+pub trait Queue<T> {
+   fn push(&mut self, value: T);
+}
+
+impl<T> Queue<T> for VecDeque<T> {
+   fn push(&mut self, value: T) {
+      self.push_back(value)
+   }
+}
+
+impl<T> Queue<T> for Vec<T> {
+   fn push(&mut self, value: T) {
+      Vec::push(self, value)
    }
 }

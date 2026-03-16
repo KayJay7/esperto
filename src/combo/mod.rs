@@ -6,6 +6,8 @@ use frozen_collections::FzScalarMap;
 use std::collections::{HashMap, HashSet, VecDeque};
 use tinyset::SetUsize;
 
+pub use types::Queue;
+
 mod types;
 
 const EVENT_BUFFER_WARMUP: usize = 16;
@@ -18,7 +20,7 @@ const EVENT_BUFFER_WARMUP: usize = 16;
 /// consider storing them on an indexable collection, and use the indices as keycodes.
 /// Consider using the methods [`Config::map_input`], [`Config::map_output`],
 /// and [`Config::iter_actions`] to help with the conversion.
-pub struct ComboHandler<A: Keycode, Z: Keycode> {
+pub struct ComboHandler<A: Keycode, Z: Keycode, Q: Queue<Event<Z>>> {
    // precomputed
    domain: FzScalarMap<A, usize>,  // keycode to key index
    keys: Box<[Key<Z>]>,            // keys
@@ -32,20 +34,33 @@ pub struct ComboHandler<A: Keycode, Z: Keycode> {
    masks: i32,         // #active masks
    cache_counter: i32, // current cache key
    /// Output event queue. This is filled when calling the [`ComboHandler::handle`] method.
-   /// Use [`VecDeque::pop_front`] to get the output events
-   pub events: VecDeque<Event<Z>>, // output event queue
+   /// The queue is populated using the [`Queue::push`] method. When created using [`ComboHandler::new`], the queue
+   /// is of type [`VecDeque`], use the method [`VecDeque::pop_front`] to extract the output events.
+   pub events: Q, // output event queue
 }
 
-impl<A: Keycode, Z: Keycode> ComboHandler<A, Z> {
+impl<A: Keycode, Z: Keycode> ComboHandler<A, Z, VecDeque<Event<Z>>> {
+   /// Creates the handler object from a configuration object, using a [`VecDeque`]
+   /// as event queue. The queue pre-allocates some capacity, to possibly avoid
+   /// allocations during event handling.
+   ///
+   /// This method does a lot precomputation in order to speed up subsequent calls to
+   /// the [`ComboHandler::handle`] method. It will be slow on complex configurations.
+   pub fn new(config: &Config<A, Z>) -> ComboHandler<A, Z, VecDeque<Event<Z>>> {
+      ComboHandler::with(config, VecDeque::with_capacity(EVENT_BUFFER_WARMUP))
+   }
+}
+
+impl<A: Keycode, Z: Keycode, Q: Queue<Event<Z>>> ComboHandler<A, Z, Q> {
    fn is_masking(&self) -> bool {
       self.masks > 0
    }
 
-   /// Creates the handler object from a configuration object.
+   /// Creates the handler object from a configuration object, using the provided queue.
    ///
    /// This method does a lot precomputation in order to speed up subsequent calls to
    /// the [`ComboHandler::handle`] method. It will be slow on complex configurations.
-   pub fn new(config: &Config<A, Z>) -> ComboHandler<A, Z> {
+   pub fn with(config: &Config<A, Z>, queue: Q) -> ComboHandler<A, Z, Q> {
       struct MutKey<B: Keycode> {
          action: Option<B>,
          latching: bool,
@@ -272,7 +287,7 @@ impl<A: Keycode, Z: Keycode> ComboHandler<A, Z> {
          groups_intersect: intersect_adjacency.into_boxed_slice(),
          masks: 0,
          cache_counter: 1,
-         events: VecDeque::with_capacity(EVENT_BUFFER_WARMUP),
+         events: queue,
       }
    }
 
@@ -282,6 +297,9 @@ impl<A: Keycode, Z: Keycode> ComboHandler<A, Z> {
    /// * `false` it the input event was not handled (the keycode wasn't in the configuration)
    ///
    /// Events that are not handled do not produce any output events.
+   ///
+   /// The method expects a "sane" event sequence (i.e. no double-keydown or double-keyup).
+   /// The behaviour for non-sane sequences is undefined.
    ///
    /// Output events are not returned, but pushed *in order* on the `events` field.
    /// If the event queue is not empty when calling this method, it is **not** cleared
@@ -354,7 +372,7 @@ impl<A: Keycode, Z: Keycode> ComboHandler<A, Z> {
                      })
                      .or(self.keys[key].action.filter(|_| !self.is_masking()))
                      .map(|action| {
-                        self.events.push_back(Event {
+                        self.events.push(Event {
                            keycode: action,
                            kind: event.kind,
                            value: event.value,
@@ -417,7 +435,7 @@ impl<A: Keycode, Z: Keycode> ComboHandler<A, Z> {
             if self.keys[key].is_immediate()
                && let Some(action) = self.keys[key].get_combo(candidate_combo, &self.keys_combos).action
             {
-               self.events.push_back(Event {
+               self.events.push(Event {
                   keycode: action,
                   kind: event.kind,
                   value: event.value,
@@ -458,13 +476,13 @@ impl<A: Keycode, Z: Keycode> ComboHandler<A, Z> {
                   .or(self.keys[key].action)
                   .map(|action| {
                      if !self.keys[key].is_immediate() {
-                        self.events.push_back(Event {
+                        self.events.push(Event {
                            keycode: action,
                            kind: Kind::Down,
                            value: 0,
                         });
                      }
-                     self.events.push_back(Event {
+                     self.events.push(Event {
                         keycode: action,
                         kind: Kind::Up,
                         value: 0,
@@ -485,7 +503,7 @@ impl<A: Keycode, Z: Keycode> ComboHandler<A, Z> {
          && self.keys[key].is_immediate()
          && let Some(action) = self.keys[key].action
       {
-         self.events.push_back(Event {
+         self.events.push(Event {
             keycode: action,
             kind,
             value,
@@ -496,11 +514,28 @@ impl<A: Keycode, Z: Keycode> ComboHandler<A, Z> {
    }
 }
 
+impl<A: Keycode, Q: Queue<Event<A>>> ComboHandler<A, A, Q> {
+   /// Like [`ComboHandler::handle`], but unhandled events are pushed directly
+   /// to the output events queue. The method returns:
+   ///
+   /// * `true` if the event was handled
+   /// * `false` if the event was not handled
+   ///
+   /// This method is only available when input and output keycode types are the same.
+   pub fn handle_passthrough(&mut self, event: Event<A>) -> bool {
+      if !self.handle(event) {
+         self.events.push(event);
+         return false;
+      }
+      true
+   }
+}
+
 fn close_active_combos<Z: Keycode>(
    group: &mut Group,
    keys: &mut [Key<Z>],
    keys_combos: &[Combo<Z>],
-   events: &mut VecDeque<Event<Z>>,
+   events: &mut impl Queue<Event<Z>>,
 ) {
    for key in group.active_combos.drain() {
       // terminate the actions it modified
@@ -511,7 +546,7 @@ fn close_active_combos<Z: Keycode>(
             .and_then(|combo| keys[key].get_combo(combo, keys_combos).action)
       {
          // keyup modifiers did not produce a keydown
-         events.push_back(Event {
+         events.push(Event {
             keycode: action,
             kind: Kind::Up,
             value: 0,
